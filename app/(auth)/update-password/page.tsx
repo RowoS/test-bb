@@ -1,13 +1,14 @@
 "use client";
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import UpdatePasswordForm from "@/features/auth/components/forms/UpdatePasswordForm";
 
-export default function UpdatePasswordPage() {
+function UpdatePasswordContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const code = searchParams.get("code");
-  const errorParam = searchParams.get("error"); 
+  const errorParam = searchParams.get("error");
   const errorDescription = searchParams.get("error_description");
 
   if (errorParam) {
@@ -48,6 +49,19 @@ export default function UpdatePasswordPage() {
     );
   }
 
-  return <UpdatePasswordForm/>;
+  return <UpdatePasswordForm />;
 }
 
+export default function UpdatePasswordPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <img src="/loader.gif" alt="Loading" className="w-24 h-24" />
+        </div>
+      }
+    >
+      <UpdatePasswordContent />
+    </Suspense>
+  );
+}
